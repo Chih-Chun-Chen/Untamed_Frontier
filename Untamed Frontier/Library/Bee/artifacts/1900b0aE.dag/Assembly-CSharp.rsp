@@ -343,12 +343,12 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/Unity.VSCode.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
-"Assets/Scripts/EasyGameManager.cs"
-"Assets/Scripts/HardGameManager.cs"
 "Assets/Scripts/MainManager.cs"
-"Assets/Scripts/MediumGameManager.cs"
 "Assets/Scripts/Person.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/SceneScript/EasyGameManager.cs"
+"Assets/Scripts/SceneScript/HardGameManager.cs"
+"Assets/Scripts/SceneScript/MediumGameManager.cs"
 -langversion:9.0
 
 /deterministic
