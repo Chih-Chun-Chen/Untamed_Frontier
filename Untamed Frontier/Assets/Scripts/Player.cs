@@ -8,11 +8,16 @@ public class Player : MonoBehaviour
     public GameObject playerHead;
     public GameObject playerBody;
     public GameObject gun;
+    public GameObject bulletPrefab;
 
     private Camera cameraComponent;
 
     private Vector3 cameraPositionOffset;
     private Vector3 cameraRotationOffset;
+
+    private Vector3 bulletSpawnOffset;
+    private float bulletSpeed = 100f;
+    private float bulletPosition;
 
     private Vector3 gunPositionOffset;
     private Vector3 gunRotationOffset;
@@ -28,6 +33,7 @@ public class Player : MonoBehaviour
     {
         cameraComponent = playerCamera.GetComponent<Camera>();
         cameraComponent.fieldOfView = 60f;
+        bulletSpawnOffset = new Vector3(0f, 0.28f, 0f);
 
         // Lock the cursor to the center of the screen and hide it
         Cursor.lockState = CursorLockMode.Locked;
@@ -91,6 +97,11 @@ public class Player : MonoBehaviour
 
         transform.position += movement;
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            FireBullet(); // Call method to instantiate the bullet
+        }
+
         // Scope in/out
         if (Input.GetMouseButtonDown(1))
         {
@@ -113,4 +124,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    void FireBullet()
+    {
+        Vector3 bulletPosition = playerCamera.transform.position + playerCamera.transform.forward * 1.48f;
+        GameObject bullet = Instantiate(bulletPrefab, bulletPosition, playerCamera.transform.rotation);
+            // Add Rigidbody component to the bullet
+            Rigidbody rb = bullet.GetComponent<Rigidbody>();
+            rb.AddForce(playerCamera.transform.forward * bulletSpeed, ForceMode.Impulse);
+    }
 }

@@ -7,6 +7,7 @@ TagManager:
   - Bullet
   - Player Head
   - Player Camera
+  - Construction
   layers:
   - Default
   - TransparentFX
