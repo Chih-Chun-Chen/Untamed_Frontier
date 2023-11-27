@@ -1217,7 +1217,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 374003024}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.37, z: -9.33}
+  m_LocalPosition: {x: 0, y: 0.37, z: -9.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1257,7 +1257,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 13.5
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -1635,6 +1635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 374003024}
   playerHead: {fileID: 1068703815}
+  playerBody: {fileID: 1472159583}
   gun: {fileID: 670911294}
 --- !u!1 &664554703
 GameObject:
@@ -2231,15 +2232,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4579612719276771722, guid: d79c4a1e1034c45448f622fa03847247, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.425
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4579612719276771722, guid: d79c4a1e1034c45448f622fa03847247, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.088
+      value: 0.065
       objectReference: {fileID: 0}
     - target: {fileID: 4579612719276771722, guid: d79c4a1e1034c45448f622fa03847247, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.501
+      value: -8.05
       objectReference: {fileID: 0}
     - target: {fileID: 4579612719276771722, guid: d79c4a1e1034c45448f622fa03847247, type: 3}
       propertyPath: m_LocalRotation.w

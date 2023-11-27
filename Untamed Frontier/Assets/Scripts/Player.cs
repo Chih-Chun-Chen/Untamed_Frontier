@@ -6,31 +6,111 @@ public class Player : MonoBehaviour
 {
     public GameObject playerCamera;
     public GameObject playerHead;
+    public GameObject playerBody;
     public GameObject gun;
+
+    private Camera cameraComponent;
 
     private Vector3 cameraPositionOffset;
     private Vector3 cameraRotationOffset;
 
-    // Start is called before the first frame update
+    private Vector3 gunPositionOffset;
+    private Vector3 gunRotationOffset;
+
+    private float mouseSensitivity = 150f;
+    private float moveSpeed = 5f;
+    private float xRotation = 0f;
+    private float yRotation = 0f;
+
+    private int scopeUp = -1;
+
     void Start()
     {
+        cameraComponent = playerCamera.GetComponent<Camera>();
+        cameraComponent.fieldOfView = 60f;
 
-        cameraPositionOffset = new Vector3(0, 0.03f, -0.39f);
+        // Lock the cursor to the center of the screen and hide it
+        Cursor.lockState = CursorLockMode.Locked;
+
+        cameraPositionOffset = new Vector3(0, 0.03f, -0.08f);
+        gunPositionOffset = new Vector3(0.351f, -0.402f, 0.44f);
+
         if (playerCamera != null)
         {
             playerCamera.transform.localPosition = cameraPositionOffset;
             playerCamera.transform.localRotation = Quaternion.Euler(cameraRotationOffset);
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (playerCamera != null)
+        if (gun != null)
         {
-            playerCamera.transform.position = playerHead.transform.position + cameraPositionOffset;
+            gun.transform.localPosition = gunPositionOffset;
+            gun.transform.localRotation = Quaternion.Euler(gunRotationOffset);
         }
     }
 
+    void Update()
+    {
+        // Get mouse input
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        // Update the rotations
+        xRotation -= mouseY;
+        yRotation += mouseX;
+
+        xRotation = Mathf.Clamp(xRotation, -72f, 28.5f); // Clamps the vertical rotation
+
+        // Rotate the player's head for up/down look and y-axis rotation
+        playerHead.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0f);
+
+        if (playerCamera != null)
+        {
+            // Update camera position
+            playerCamera.transform.position = playerHead.transform.position + cameraPositionOffset;
+            // Apply rotation to the camera
+            playerCamera.transform.rotation = playerHead.transform.rotation;
+        }
+
+        if (gun != null)
+        {
+            // Update gun position to be on the right side of the camera
+            gun.transform.position = playerCamera.transform.position + playerCamera.transform.right * gunPositionOffset.x + playerCamera.transform.up * gunPositionOffset.y + playerCamera.transform.forward * gunPositionOffset.z;
+
+            // Gun rotation matches the camera rotation
+            gun.transform.rotation = playerCamera.transform.rotation;
+        }
+
+        // Player movement
+        float horizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+        float vertical = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+
+        // Move the player in the direction the camera is looking
+        Vector3 movement = playerCamera.transform.right * horizontal + playerCamera.transform.forward * vertical;
+        // Ignore vertical movement along the y-axis
+        movement.y = 0;
+
+        transform.position += movement;
+
+        // Scope in/out
+        if (Input.GetMouseButtonDown(1))
+        {
+            scopeUp *= -1;
+            ScopeUp();
+        }
+    }
+
+    void ScopeUp()
+    {
+        if (scopeUp == 1)
+        {
+            cameraComponent.fieldOfView = 13.5f;
+            gunPositionOffset = new Vector3(0f, -0.305f, 0.97f);
+        }
+        else
+        {
+            cameraComponent.fieldOfView = 60f;
+            gunPositionOffset = new Vector3(0.351f, -0.402f, 0.44f);
+        }
+    }
 
 }
