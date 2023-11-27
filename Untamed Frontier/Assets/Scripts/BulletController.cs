@@ -18,10 +18,6 @@ public class BulletController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Construction"))
-        {
-            Destroy(collision.gameObject); // Destroy the construction object
-        }
         Destroy(gameObject); // Destroy the bullet itself
     }
 }

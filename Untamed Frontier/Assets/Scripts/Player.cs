@@ -9,7 +9,9 @@ public class Player : MonoBehaviour
     public GameObject playerBody;
     public GameObject gun;
     public GameObject bulletPrefab;
+    public AudioClip bulletEffect;
 
+    private Rigidbody playerRigidbody;
     private Camera cameraComponent;
 
     private Vector3 cameraPositionOffset;
@@ -19,11 +21,15 @@ public class Player : MonoBehaviour
     private float bulletSpeed = 100f;
     private float bulletPosition;
 
+    private float jumpForce = 5f;
+    private bool isGrounded = true;
+    private float sprintSpeed = 6f;
+    
     private Vector3 gunPositionOffset;
     private Vector3 gunRotationOffset;
 
     private float mouseSensitivity = 150f;
-    private float moveSpeed = 5f;
+    private float moveSpeed = 3f;
     private float xRotation = 0f;
     private float yRotation = 0f;
 
@@ -31,6 +37,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        playerRigidbody = GetComponent<Rigidbody>();
         cameraComponent = playerCamera.GetComponent<Camera>();
         cameraComponent.fieldOfView = 60f;
         bulletSpawnOffset = new Vector3(0f, 0.28f, 0f);
@@ -99,7 +106,12 @@ public class Player : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            FireBullet(); // Call method to instantiate the bullet
+            FireBullet();
+
+            // Play bullet sound effect
+            AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
+            newAudioSource.PlayOneShot(bulletEffect);
+            Destroy(newAudioSource, bulletEffect.length);
         }
 
         // Scope in/out
@@ -108,6 +120,25 @@ public class Player : MonoBehaviour
             scopeUp *= -1;
             ScopeUp();
         }
+
+        // Jumping
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
+        }
+
+        // Sprinting
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            moveSpeed = sprintSpeed;
+        }
+        else
+        {
+            moveSpeed = 3f; // Reset to normal speed when not sprinting
+        }
+
+        
     }
 
     void ScopeUp()
@@ -131,5 +162,13 @@ public class Player : MonoBehaviour
             // Add Rigidbody component to the bullet
             Rigidbody rb = bullet.GetComponent<Rigidbody>();
             rb.AddForce(playerCamera.transform.forward * bulletSpeed, ForceMode.Impulse);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Construction"))
+        {
+            isGrounded = true;
+        }
     }
 }
