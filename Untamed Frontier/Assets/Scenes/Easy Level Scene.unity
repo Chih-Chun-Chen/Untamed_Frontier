@@ -4532,6 +4532,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4874654175397171161, guid: 8f3bca1ae40d27e4a8a895f632c41e99, type: 3}
+      propertyPath: bombParticle
+      value: 
+      objectReference: {fileID: 100004, guid: a89abc0d2591545288f4c041059ae633, type: 3}
+    - target: {fileID: 4874654175397171161, guid: 8f3bca1ae40d27e4a8a895f632c41e99, type: 3}
+      propertyPath: particlePrefab
+      value: 
+      objectReference: {fileID: 100004, guid: a89abc0d2591545288f4c041059ae633, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f3bca1ae40d27e4a8a895f632c41e99, type: 3}
 --- !u!1001 &1323189211

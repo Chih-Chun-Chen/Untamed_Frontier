@@ -4,6 +4,10 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     public AudioClip bombEffect;
+    public GameObject bombParticle;
+
+    private bool isEliminated = false;
+
     private int bombTimer;
 
     void Start()
@@ -21,10 +25,17 @@ public class Bomb : MonoBehaviour
             Debug.Log(bombTimer);
         }
 
-        AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
-        newAudioSource.PlayOneShot(bombEffect);
-        Destroy(newAudioSource, bombEffect.length);
-
+        if (!isEliminated)
+        {
+            AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
+            newAudioSource.PlayOneShot(bombEffect);
+            Destroy(newAudioSource, bombEffect.length);
+            if (bombParticle != null)
+            {
+                Instantiate(bombParticle, transform.position, Quaternion.identity);
+            }
+        }
+       
         // Delay the destruction of the gameObject until after the sound has finished playing.
         Destroy(gameObject, bombEffect.length);
     }
