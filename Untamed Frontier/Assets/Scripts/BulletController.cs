@@ -18,6 +18,10 @@ public class BulletController : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        if(collision.gameObject.tag == "Enemy")
+        {
+            Destroy(collision.gameObject);
+        }
         Destroy(gameObject); // Destroy the bullet itself
     }
 }
