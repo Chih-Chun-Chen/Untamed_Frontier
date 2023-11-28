@@ -6,12 +6,15 @@ public class Bomb : MonoBehaviour
     public AudioClip bombEffect;
     public GameObject bombParticle;
 
+    private Player player;
+
     private bool isEliminated = false;
 
     private int bombTimer;
 
     void Start()
     {
+        player = GameObject.FindObjectOfType<Player>();
         bombTimer = 5;
         StartCoroutine(Countdown());
     }
@@ -34,6 +37,7 @@ public class Bomb : MonoBehaviour
             {
                 Instantiate(bombParticle, transform.position, Quaternion.identity);
             }
+            MainManager.Instance.playerHealth -= 200f;
         }
        
         // Delay the destruction of the gameObject until after the sound has finished playing.

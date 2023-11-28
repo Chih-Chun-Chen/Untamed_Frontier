@@ -4,15 +4,29 @@ using UnityEngine;
 
 public class MainManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static MainManager Instance; // Singleton instance
+    public float playerHealth;
+
+    void Awake()
     {
-        
+
+        // Set the instance to this and make it persistent
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        playerHealth = 100f;
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        
+
     }
 }
