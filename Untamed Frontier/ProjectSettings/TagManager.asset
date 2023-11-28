@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Player Camera
+  - Ground
+  - Player Head
+  - Bullet
+  - Construction
+  - Enemy
+  - Bomb
   layers:
   - Default
   - TransparentFX

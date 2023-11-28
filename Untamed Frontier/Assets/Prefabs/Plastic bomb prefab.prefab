@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
   - component: {fileID: 6400000}
+  - component: {fileID: 4874654175397171161}
   m_Layer: 0
   m_Name: Plastic bomb prefab
-  m_TagString: Untagged
+  m_TagString: Bomb
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,3 +99,16 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300002, guid: 5eb4f6b1a92739246afe586dc2d32c8d, type: 3}
+--- !u!114 &4874654175397171161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3502eb081abc104da0dbe00fcc4287e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bombEffect: {fileID: 8300000, guid: 9e3875251243548428dbf9992e3e5eca, type: 3}
