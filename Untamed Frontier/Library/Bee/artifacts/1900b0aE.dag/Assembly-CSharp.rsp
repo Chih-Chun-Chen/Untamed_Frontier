@@ -353,6 +353,7 @@
 "Assets/Scripts/MainManager.cs"
 "Assets/Scripts/MediumGameManager.cs"
 "Assets/Scripts/Player.cs"
+"Assets/Scripts/SplashManager.cs"
 -langversion:9.0
 
 /deterministic

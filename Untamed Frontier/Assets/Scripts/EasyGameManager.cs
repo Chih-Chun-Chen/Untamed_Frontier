@@ -14,7 +14,7 @@ public class EasyGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(MainManager.Instance.playerHealth <= 0)
+        if(MainManager.Instance.isGameOver)
         {
             SceneManager.LoadScene("Game Over Scene");
         }

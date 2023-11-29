@@ -15,7 +15,7 @@ public class Bomb : MonoBehaviour
     void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
-        bombTimer = 5;
+        bombTimer = 10000;
         StartCoroutine(Countdown());
     }
 
@@ -38,6 +38,13 @@ public class Bomb : MonoBehaviour
                 Instantiate(bombParticle, transform.position, Quaternion.identity);
             }
             MainManager.Instance.playerHealth -= 200f;
+
+            yield return new WaitForSeconds(bombEffect.length);
+
+            if (MainManager.Instance.playerHealth <= 0f)
+            {
+                MainManager.Instance.isGameOver = true;
+            }
         }
        
         // Delay the destruction of the gameObject until after the sound has finished playing.

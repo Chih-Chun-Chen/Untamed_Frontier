@@ -6,6 +6,7 @@ public class MainManager : MonoBehaviour
 {
     public static MainManager Instance; // Singleton instance
     public float playerHealth;
+    public bool isGameOver = false;
 
     void Awake()
     {
