@@ -260,6 +260,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3920442fbe8d52b4886a69d5c75437a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerHead: {fileID: 2334270794671122132}
+  playerBody: {fileID: 347240324003644410}
+  gun: {fileID: 2606202725793073841}
+  bulletPrefab: {fileID: 7118435279842396717, guid: afff3337ae34322439185d9f1921e640, type: 3}
+  bulletEffect: {fileID: 8300000, guid: 8ddf72703c8ef044db4f778a553dc269, type: 3}
 --- !u!65 &764746084500471116
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -345,5 +350,10 @@ PrefabInstance:
 --- !u!4 &1328647973233227938 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4579612719276771722, guid: d79c4a1e1034c45448f622fa03847247, type: 3}
+  m_PrefabInstance: {fileID: 3314160918459429160}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2606202725793073841 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 708565261683047321, guid: d79c4a1e1034c45448f622fa03847247, type: 3}
   m_PrefabInstance: {fileID: 3314160918459429160}
   m_PrefabAsset: {fileID: 0}
