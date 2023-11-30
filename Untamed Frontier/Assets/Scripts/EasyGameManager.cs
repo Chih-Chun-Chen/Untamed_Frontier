@@ -8,6 +8,7 @@ using TMPro;
 public class EasyGameManager : MonoBehaviour
 {
     public TextMeshProUGUI timer;
+    public bool isEasyEliminated = false;
 
     private Bomb bomb;
 
@@ -21,6 +22,11 @@ public class EasyGameManager : MonoBehaviour
     void Update()
     {
         timer.text = "Timer: " + bomb.bombTimer.ToString();
+
+        if (isEasyEliminated)
+        {
+            SceneManager.LoadScene("Medium Level Scene");
+        }
 
         if (MainManager.Instance.isGameOver)
         {
