@@ -6,16 +6,16 @@ public class Bomb : MonoBehaviour
     public AudioClip bombEffect;
     public GameObject bombParticle;
 
+    public int bombTimer;
+
     private Player player;
 
     private bool isEliminated = false;
 
-    private int bombTimer;
-
     void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
-        bombTimer = 10000;
+        bombTimer = 90;
         StartCoroutine(Countdown());
     }
 
