@@ -4,26 +4,24 @@ using TMPro;
 
 public class Bomb : MonoBehaviour
 {
+    public GameObject manager;
     public AudioClip bombEffect;
     public GameObject bombParticle;
     public TextMeshProUGUI messageText;
 
+    public bool isEliminated = false;
     public int bombTimer;
-    private float disarmDistance = 0.5f; // Distance within which the player can disarm the bomb
+    private float disarmDistance = 1f; // Distance within which the player can disarm the bomb
 
     private Player player;
-    private EasyGameManager emanager;
     private bool isPlayerInRange = false;
     private bool isDisarming = false;
     private float disarmTimer = 0f;
     private float totalDisarmTime = 5f;
-    private bool isEasyEliminated = false;
 
     void Start()
     {
         player = GameObject.FindObjectOfType<Player>();
-        emanager = GameObject.FindObjectOfType<EasyGameManager>();
-        bombTimer = 90;
         messageText.text = "";
         StartCoroutine(Countdown());
     }
@@ -89,14 +87,14 @@ public class Bomb : MonoBehaviour
 
     IEnumerator Countdown()
     {
-        while (bombTimer > 0 && !emanager.isEasyEliminated)
+        while (bombTimer > 0 && !isEliminated)
         {
             yield return new WaitForSeconds(1);
             bombTimer--;
             Debug.Log(bombTimer);
         }
 
-        if (!emanager.isEasyEliminated)
+        if (!isEliminated)
         {
             Explode();
         }
@@ -108,7 +106,7 @@ public class Bomb : MonoBehaviour
     void DisarmBomb()
     {
         messageText.text = "Bomb disarmed!";
-        emanager.isEasyEliminated = true;
+        isEliminated = true;
         isPlayerInRange = false;
         isDisarming = false;
     }

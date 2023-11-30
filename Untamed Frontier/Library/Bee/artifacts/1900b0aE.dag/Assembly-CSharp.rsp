@@ -350,6 +350,7 @@
 "Assets/Scripts/Bomb.cs"
 "Assets/Scripts/BulletController.cs"
 "Assets/Scripts/EasyGameManager.cs"
+"Assets/Scripts/EndGameManager.cs"
 "Assets/Scripts/Enemy.cs"
 "Assets/Scripts/HardGameManager.cs"
 "Assets/Scripts/MainManager.cs"
