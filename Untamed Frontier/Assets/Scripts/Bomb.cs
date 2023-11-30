@@ -41,7 +41,7 @@ public class Bomb : MonoBehaviour
         if (player != null)
         {
             float distance = Vector3.Distance(transform.position, player.transform.position);
-            Debug.Log(distance);
+            //Debug.Log(distance);
             isPlayerInRange = distance < disarmDistance;
 
             if (isPlayerInRange)
@@ -91,7 +91,7 @@ public class Bomb : MonoBehaviour
         {
             yield return new WaitForSeconds(1);
             bombTimer--;
-            Debug.Log(bombTimer);
+            //Debug.Log(bombTimer);
         }
 
         if (!isEliminated)

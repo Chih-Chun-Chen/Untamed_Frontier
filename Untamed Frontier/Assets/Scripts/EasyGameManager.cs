@@ -8,6 +8,8 @@ using TMPro;
 public class EasyGameManager : MonoBehaviour
 {
     public TextMeshProUGUI timer;
+    public TextMeshProUGUI health;
+    public bool isEliminated = false;
 
     private Bomb bomb;
 
@@ -21,6 +23,7 @@ public class EasyGameManager : MonoBehaviour
     void Update()
     {
         timer.text = "Timer: " + bomb.bombTimer.ToString();
+        health.text = "Health: " + MainManager.Instance.playerHealth.ToString();
 
         if (bomb.isEliminated)
         {   
@@ -29,6 +32,11 @@ public class EasyGameManager : MonoBehaviour
         }
 
         if (MainManager.Instance.isGameOver)
+        {
+            SceneManager.LoadScene("Game Over Scene");
+        }
+
+        if (MainManager.Instance.playerHealth <= 0)
         {
             SceneManager.LoadScene("Game Over Scene");
         }
