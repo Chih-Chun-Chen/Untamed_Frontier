@@ -7,10 +7,11 @@ public class Player : MonoBehaviour
     public GameObject playerCamera;
     public GameObject playerHead;
     public GameObject playerBody;
-    public GameObject gun;
+    public GameObject arm;
     public GameObject bulletPrefab;
     public AudioClip bulletEffect;
 
+    private Animator pistolAnimator;
     private Rigidbody playerRigidbody;
     private Camera cameraComponent;
 
@@ -24,19 +25,22 @@ public class Player : MonoBehaviour
     private float jumpForce = 5f;
     private bool isGrounded = true;
     private float sprintSpeed = 6f;
-    
-    private Vector3 gunPositionOffset;
-    private Vector3 gunRotationOffset;
+    private float slowSpeed = 1.5f;
+
+    private Vector3 armPositionOffset;
+    private Vector3 armRotationOffset;
+
 
     private float mouseSensitivity = 150f;
     private float moveSpeed = 3f;
     private float xRotation = 0f;
     private float yRotation = 0f;
 
-    private int scopeUp = -1;
-
     void Start()
     {
+        pistolAnimator = transform.Find("Pistol_Knife").GetComponent<Animator>();
+        pistolAnimator.SetBool("IsIdle", true);
+
         playerRigidbody = GetComponent<Rigidbody>();
         cameraComponent = playerCamera.GetComponent<Camera>();
         cameraComponent.fieldOfView = 60f;
@@ -46,7 +50,11 @@ public class Player : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         cameraPositionOffset = new Vector3(0, 0.03f, -0.08f);
-        gunPositionOffset = new Vector3(0.351f, -0.402f, 0.44f);
+        //armPositionOffset = new Vector3(0f, -1.68f, -8.89f);
+
+        Vector3 armPosition = arm.transform.position;
+        Vector3 bodyPosition = playerBody.transform.position;
+        armPositionOffset = armPosition - bodyPosition;
 
         if (playerCamera != null)
         {
@@ -54,15 +62,16 @@ public class Player : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(cameraRotationOffset);
         }
 
-        if (gun != null)
+        if (arm != null)
         {
-            gun.transform.localPosition = gunPositionOffset;
-            gun.transform.localRotation = Quaternion.Euler(gunRotationOffset);
+            arm.transform.localPosition = armPositionOffset;
+            arm.transform.localRotation = Quaternion.Euler(armRotationOffset);
         }
     }
 
     void Update()
     {
+        Debug.Log(pistolAnimator.GetBool("IsIdle"));
         // Get mouse input
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -84,76 +93,26 @@ public class Player : MonoBehaviour
             playerCamera.transform.rotation = playerHead.transform.rotation;
         }
 
-        if (gun != null)
+        if (arm != null)
         {
-            // Update gun position to be on the right side of the camera
-            gun.transform.position = playerCamera.transform.position + playerCamera.transform.right * gunPositionOffset.x + playerCamera.transform.up * gunPositionOffset.y + playerCamera.transform.forward * gunPositionOffset.z;
+            // Update arm position to be on the body
+            arm.transform.position = playerBody.transform.position + playerBody.transform.right * armPositionOffset.x + playerBody.transform.up * armPositionOffset.y + playerBody.transform.forward * armPositionOffset.z;
 
-            // Gun rotation matches the camera rotation
-            gun.transform.rotation = playerCamera.transform.rotation;
+            // Get the camera's rotation in Euler angles
+            Vector3 cameraRotation = playerCamera.transform.eulerAngles;
+
+            // Keep the arm's current X and Z rotations
+            float armXRotation = arm.transform.eulerAngles.x;
+            float armZRotation = arm.transform.eulerAngles.z;
+
+            // Apply the camera's Y rotation to the arm, and keep its original X and Z rotations
+            arm.transform.rotation = Quaternion.Euler(armXRotation, cameraRotation.y, armZRotation);
+
         }
 
-        // Player movement
-        float horizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
-        float vertical = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
-
-        // Move the player in the direction the camera is looking
-        Vector3 movement = playerCamera.transform.right * horizontal + playerCamera.transform.forward * vertical;
-        // Ignore vertical movement along the y-axis
-        movement.y = 0;
-
-        transform.position += movement;
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            FireBullet();
-
-            // Play bullet sound effect
-            AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
-            newAudioSource.PlayOneShot(bulletEffect);
-            Destroy(newAudioSource, bulletEffect.length);
-        }
-
-        // Scope in/out
-        if (Input.GetMouseButtonDown(1))
-        {
-            scopeUp *= -1;
-            ScopeUp();
-        }
-
-        // Jumping
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-        }
-
-        // Sprinting
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            moveSpeed = sprintSpeed;
-        }
-        else
-        {
-            moveSpeed = 3f; // Reset to normal speed when not sprinting
-        }
-
-        
+        Action();
     }
 
-    void ScopeUp()
-    {
-        if (scopeUp == 1)
-        {
-            cameraComponent.fieldOfView = 13.5f;
-            gunPositionOffset = new Vector3(0f, -0.305f, 0.97f);
-        }
-        else
-        {
-            cameraComponent.fieldOfView = 60f;
-            gunPositionOffset = new Vector3(0.351f, -0.402f, 0.44f);
-        }
-    }
 
     void FireBullet()
     {
@@ -169,6 +128,65 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Construction"))
         {
             isGrounded = true;
+        }
+    }
+
+    void Action()
+    {
+        // Player movement
+        float horizontal = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime;
+        float vertical = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
+        bool leftClick = Input.GetMouseButtonDown(0);
+        bool leftShift = Input.GetKey(KeyCode.LeftShift);
+        bool space = Input.GetKeyDown(KeyCode.Space);
+
+        // Move the player in the direction the camera is looking
+        Vector3 movement = playerCamera.transform.right * horizontal + playerCamera.transform.forward * vertical;
+        // Ignore vertical movement along the y-axis
+        movement.y = 0;
+
+        transform.position += movement;
+
+        if (leftClick)
+        {
+            FireBullet();
+
+            // Play bullet sound effect
+            AudioSource newAudioSource = gameObject.AddComponent<AudioSource>();
+            newAudioSource.PlayOneShot(bulletEffect);
+            Destroy(newAudioSource, bulletEffect.length);
+        }
+
+
+        // Jumping
+        if (space && isGrounded)
+        {
+            playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isGrounded = false;
+        }
+
+        // Sprinting
+        if (leftShift)
+        {
+            moveSpeed = sprintSpeed;
+        }
+        else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E))
+        {
+            moveSpeed = slowSpeed;
+            Debug.Log(moveSpeed);
+        }
+        else
+        {
+            moveSpeed = 3f; // Reset to normal speed when not sprinting
+        }
+
+        
+        if (horizontal == 0 && vertical == 0 && !leftClick && !leftShift && !space) 
+        {
+            pistolAnimator.SetBool("IsIdle", true);
+        } else
+        {
+            pistolAnimator.SetBool("IsIdle", false);
         }
     }
 }

@@ -41,8 +41,15 @@ public class EndGameManager : MonoBehaviour
 
     void RestartGame()
     {
-        // Assuming "Easy Level Scene" is the correct scene name and it's added to the build settings
-        SceneManager.LoadScene("Easy Level Scene");
+        try
+        {
+            SceneManager.LoadScene("Main Splash Screen");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"Failed to load scene Main Splash Scene. Error: {e.Message}");
+        }
+        Debug.Log("Restart game");
     }
 
     void QuitGame()
