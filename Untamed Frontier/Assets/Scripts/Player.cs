@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     {
         pistolAnimator = transform.Find("Pistol_Knife").GetComponent<Animator>();
         pistolAnimator.SetBool("IsIdle", true);
+        pistolAnimator.SetBool("IsRun", false);
 
         playerRigidbody = GetComponent<Rigidbody>();
         cameraComponent = playerCamera.GetComponent<Camera>();
@@ -71,7 +72,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(pistolAnimator.GetBool("IsIdle"));
         // Get mouse input
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -128,6 +128,7 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Construction"))
         {
             isGrounded = true;
+            pistolAnimator.SetBool("IsJump", false);
         }
     }
 
@@ -157,18 +158,35 @@ public class Player : MonoBehaviour
             Destroy(newAudioSource, bulletEffect.length);
         }
 
+        if(leftClick)
+        {
+            pistolAnimator.SetBool("IsShot", true);
+            StartCoroutine(ResetShoot());
+        }
+
+        IEnumerator ResetShoot()
+        {
+            yield return new WaitForSeconds(1f); // Wait for 0.5 seconds
+
+            if (!Input.GetMouseButton(0)) // Check if left click is not held down
+            {
+                pistolAnimator.SetBool("IsShot", false);
+            }
+        }
 
         // Jumping
         if (space && isGrounded)
         {
             playerRigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
+            pistolAnimator.SetBool("IsJump", true);
         }
 
         // Sprinting
         if (leftShift)
         {
             moveSpeed = sprintSpeed;
+            pistolAnimator.SetBool("IsRun", true);
         }
         else if (Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E))
         {
@@ -178,15 +196,16 @@ public class Player : MonoBehaviour
         else
         {
             moveSpeed = 3f; // Reset to normal speed when not sprinting
+            pistolAnimator.SetBool("IsRun", false);
         }
 
-        
-        if (horizontal == 0 && vertical == 0 && !leftClick && !leftShift && !space) 
+        if (vertical != 0 && !leftShift)
         {
-            pistolAnimator.SetBool("IsIdle", true);
-        } else
+            pistolAnimator.SetBool("IsWalk", true);
+        }
+        else
         {
-            pistolAnimator.SetBool("IsIdle", false);
+             pistolAnimator.SetBool("IsWalk", false);
         }
     }
 }
