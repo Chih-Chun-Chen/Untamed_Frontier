@@ -8,6 +8,12 @@ public class MainManager : MonoBehaviour
     public float playerHealth;
     public bool isGameOver = false;
 
+    public float fpsSliderValue;
+    public int musicDropdownValue;
+    public int backgroundMusicToggleValue;
+    public float volumeSliderValue;
+    public int crosshairColorDropdownValue;
+
     void Awake()
     {
         // Set the instance to this and make it persistent
@@ -26,7 +32,10 @@ public class MainManager : MonoBehaviour
 
     void Update()
     {
-        // Optionally, save settings when they are changed by hooking into their respective event listeners
-        // This can be done in the UI setup rather than in Update for better performance
+        Debug.Log("FPS" + fpsSliderValue);
+        Debug.Log("Music" + musicDropdownValue);
+        Debug.Log("Background Music" + backgroundMusicToggleValue);
+        Debug.Log("Volume" + volumeSliderValue);
+        Debug.Log("Crosshair Color" + crosshairColorDropdownValue);
     }
 }

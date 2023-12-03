@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class Player : MonoBehaviour
     public GameObject arm;
     public GameObject bulletPrefab;
     public AudioClip bulletEffect;
+
+    private Image image;
+    private Image image1;
 
     private Animator pistolAnimator;
     private Rigidbody playerRigidbody;
@@ -31,13 +35,30 @@ public class Player : MonoBehaviour
     private Vector3 armRotationOffset;
 
 
-    private float mouseSensitivity = 150f;
+    private float mouseSensitivity;
     private float moveSpeed = 3f;
     private float xRotation = 0f;
     private float yRotation = 0f;
 
     void Start()
     {
+        mouseSensitivity = MainManager.Instance.fpsSliderValue;
+        // Get all Image components in the children of this GameObject
+        Image[] images = GetComponentsInChildren<Image>();
+
+        // Loop through them and assign them based on their GameObject's name
+        foreach (Image img in images)
+        {
+            if (img.gameObject.name == "Image")
+            {
+                image = img;
+            }
+            else if (img.gameObject.name == "Image1")
+            {
+                image1 = img;
+            }
+        }
+
         pistolAnimator = transform.Find("Pistol_Knife").GetComponent<Animator>();
         pistolAnimator.SetBool("IsIdle", true);
         pistolAnimator.SetBool("IsRun", false);
@@ -67,6 +88,23 @@ public class Player : MonoBehaviour
         {
             arm.transform.localPosition = armPositionOffset;
             arm.transform.localRotation = Quaternion.Euler(armRotationOffset);
+        }
+
+
+        if (MainManager.Instance.crosshairColorDropdownValue == 0)
+        {
+            image.color = Color.red;
+            image1.color = Color.red;
+        }
+        else if (MainManager.Instance.crosshairColorDropdownValue == 1)
+        {
+            image.color = Color.blue;
+            image1.color = Color.blue;
+        }
+        else
+        {
+            image.color = Color.green;
+            image1.color = Color.green;
         }
     }
 

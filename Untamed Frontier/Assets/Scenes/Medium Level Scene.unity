@@ -1476,6 +1476,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1929736826}
     m_Modifications:
+    - target: {fileID: 3588319028895762350, guid: dbe3a8ff2b30f4046867f764c3d5f037, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 42d955e4ad639954980ea42da7ca8107, type: 2}
     - target: {fileID: 3911090782859567175, guid: dbe3a8ff2b30f4046867f764c3d5f037, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -6248,7 +6252,7 @@ GameObject:
   - component: {fileID: 1844965654}
   - component: {fileID: 1844965653}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Image1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
