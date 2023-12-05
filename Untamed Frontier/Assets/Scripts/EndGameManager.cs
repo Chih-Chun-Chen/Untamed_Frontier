@@ -60,7 +60,6 @@ public class EndGameManager : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #else
         // Quit the game in a built application
-        Debug.Log("Quit game in Build");
         Application.Quit();
 #endif
     }

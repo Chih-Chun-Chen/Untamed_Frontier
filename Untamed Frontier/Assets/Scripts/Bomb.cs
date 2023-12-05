@@ -120,7 +120,7 @@ public class Bomb : MonoBehaviour
         {
             Instantiate(bombParticle, transform.position, Quaternion.identity);
         }
-        MainManager.Instance.playerHealth -= 200f;
+        MainManager.Instance.playerHealth -= 100f;
 
         if (MainManager.Instance.playerHealth <= 0f)
         {

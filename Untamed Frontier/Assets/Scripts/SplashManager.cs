@@ -15,6 +15,7 @@ public class SplashManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MainManager.Instance.playerHealth = 100f;
         Cursor.lockState = CursorLockMode.None;
         startBtn.onClick.AddListener(StartGame);
         settingBtn.onClick.AddListener(GoToSetting);
